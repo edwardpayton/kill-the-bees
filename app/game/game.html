@@ -1,0 +1,16 @@
+<div class="hive">
+	<div ng-repeat="b in beeArr" class="bee_{{ b.type }} bee--active-{{ b.isAlive }}">
+		<h3 class="bee__type">{{ b.type }}</h3>
+		<p class="bee__life">{{ b.currentLife }} of {{ b.totalLife }}</p>
+	</div>
+</div>
+
+<p ng-show="killClick">You hit {{ killText }}</p>
+<button ng-disabled="gameOver" ng-click="killBee()">Kill the Bees!</button>
+<div ng-show="gameOver">
+	<p>Game Over</p>
+	<button ng-click="restartGame()">Try again</button>
+</div>
+
+
+<a href="#/welcome">welcome</a>
