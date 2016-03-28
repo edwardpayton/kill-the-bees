@@ -12,9 +12,10 @@ angular.module('KillTheBees.game', ['ngRoute'])
  * KillTheBees game controller
  * This is the main controller for the game
  */
-.controller('GameCtrl', function($scope, beeService, $timeout) {
+.controller('GameCtrl', ['$scope','beeService','$timeout',function($scope, beeService, $timeout) {
+
     /*
-     * beeInit functions
+     * beeInit function
      * initialises the game
      */
     (function beeInit() {
@@ -31,7 +32,7 @@ angular.module('KillTheBees.game', ['ngRoute'])
         for (i = 0; i < 8; i++) {
             $scope.beeArr.push(beeService.makeBee('drone',50,12))
         }
-
+        beeTimer();
     })();
 
     /* 
@@ -74,6 +75,24 @@ angular.module('KillTheBees.game', ['ngRoute'])
     }
     $scope.restartGame = restartGameFunc;
 
+
+    // HELPER FUNCTIONS
+    // TODO - move these to services 
+
+    /*
+     * beeTimer function
+     * stopwatch to track game play time
+     */
+    $scope.stopwatch = 0;
+    var timer;
+     
+    function beeTimer() {
+        timer = $timeout(function() {
+            $scope.stopwatch++;   
+            beeTimer();   
+        }, 1000);
+    };
+
     /*
      * beeMatch     function
      * args         Boolean     true = reset game, false = end game
@@ -90,9 +109,15 @@ angular.module('KillTheBees.game', ['ngRoute'])
             } 
         }
         $scope.gameOver = !bool;
+
+        $timeout.cancel(timer);
+        if(bool === true) {
+            $scope.stopwatch = 0;
+            beeTimer();
+        }
     }
 
-})
+}])
 /*
  * beeService service
  * Used for creating new bees

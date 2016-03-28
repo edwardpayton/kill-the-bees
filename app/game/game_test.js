@@ -4,12 +4,11 @@ describe('KillTheBees.game module', function() {
 
   beforeEach(module('KillTheBees.game'));
 
-  describe('game controller', function(){
+  describe('Bee Service', function(){
 
-    it('should ....', inject(function($controller) {
-      //spec body
-      var gameCtrl = $controller('GameCtrl');
-      expect(gameCtrl).toBeDefined();
+    it('should create a queen bee', inject(function($controller) {
+      var beeService = $servce('beeService');
+      expect(beeService.makeBee('queen',100,8).to.have.property('type','queen'));
     }));
 
   });

@@ -8,11 +8,16 @@
 
 	<div class="game__controls">
 		<button ng-disabled="gameOver" ng-click="killBee()" class="game__button button">Kill the Bees!</button>
-		<p ng-show="killClick" class="game__controls--text">You hit {{ killText }}</p>
+		<div class="game__matchInfo">
+			<p class="game__stopwatch">{{ stopwatch }} seconds</p>
+			<p ng-show="killClick" class="game__controls--text">You hit {{ killText }}</p>
+		</div>
 	</div>
 
 	<div ng-show="gameOver" class="gameOver__wrapper">
 		<p class="gameOver__text">Game Over</p>
+		<p class="gameOver__text gameOver__text--time">It took you {{ stopwatch }} seconds to Kill The Bees.</p>
+		<p class="gameOver__text gameOver__text--again">Can you do it faster?</p>
 		<button ng-click="restartGame()" class="gameOver__button button__reset">Try again</button>
 	</div>
 
