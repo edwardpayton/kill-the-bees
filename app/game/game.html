@@ -1,16 +1,22 @@
-<div class="hive">
-	<div ng-repeat="b in beeArr" class="bee_{{ b.type }} bee--active-{{ b.isAlive }}">
-		<h3 class="bee__type">{{ b.type }}</h3>
-		<p class="bee__life">{{ b.currentLife }} of {{ b.totalLife }}</p>
+<div class="game__wrapper">
+	<ul class="bee__wrapper">
+		<li ng-repeat="b in beeArr" class="bee__item bee__{{ b.type }} bee--active-{{ b.isAlive }} bee--hit-{{ b.hit }}">
+			<h3 class="bee__type">{{ b.type }}</h3>
+			<p class="bee__life">{{ b.currentLife }} of {{ b.totalLife }}</p>
+		</li>
+	</ul>
+
+	<div class="game__controls">
+		<button ng-disabled="gameOver" ng-click="killBee()" class="game__button button">Kill the Bees!</button>
+		<p ng-show="killClick" class="game__controls--text">You hit {{ killText }}</p>
+	</div>
+
+	<div ng-show="gameOver" class="gameOver__wrapper">
+		<p class="gameOver__text">Game Over</p>
+		<button ng-click="restartGame()" class="gameOver__button button__reset">Try again</button>
+	</div>
+
+	<div class="game__footer">
+		<a href="#/welcome" class="button__link">&lt; home</a>
 	</div>
 </div>
-
-<p ng-show="killClick">You hit {{ killText }}</p>
-<button ng-disabled="gameOver" ng-click="killBee()">Kill the Bees!</button>
-<div ng-show="gameOver">
-	<p>Game Over</p>
-	<button ng-click="restartGame()">Try again</button>
-</div>
-
-
-<a href="#/welcome">welcome</a>

@@ -1,0 +1,228 @@
+// This is a slimmed down version of my SCSS setup
+// In a usual set up mixing, extends, and functions would be in seperate files
+
+@import "scss/variables";
+
+@import "scss/default-styles";
+
+@import 'scss/grid-semantic';
+
+// Functions
+@function grid($cols,$toPx:false) {
+  $result: '';
+  @if ($toPx == false) {
+    $result: ($cols / $columns) * 100%;
+  }
+  @else {
+    $result: round(($maxWidth / $columns) * $cols);
+  }
+
+  @return $result;
+}
+
+// Extends
+%cf {
+	&:after {
+	  	content: "";
+	  	display: table;
+	  	clear: both;
+	}
+}
+
+// Sticky footer 
+html,
+body {
+height: 100%;
+}
+body {
+	display: table;
+	width: 100%; // max-width set on the grid
+	margin:auto;
+}
+main,
+footer {
+	display: table-row;
+	height: 1px;
+}
+main {
+	height: 100%;
+}
+
+// Generic elements
+%wrapper {
+	width: 100%;
+	max-width: 800px;
+	padding: 10px;
+	margin: auto;
+	position: relative;
+}
+%wrapper-decoration {
+	background: $materialYellowBright;
+	border: 10px solid #000;
+	text-align: center;
+}
+
+// Reusable elements
+%button-decoration {
+	font-family: Gorditas;
+	font-size: 3rem;
+	color: $white;
+	margin: 20px auto;
+	background: $materialRed;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+}
+.button {
+	&__play {
+		display: table;
+		text-decoration: none;
+		@extend %button-decoration;
+	}
+	&__reset {
+
+	}
+	&__link {
+		text-decoration: none;
+		color: #000;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Index
+footer p {
+	@extend %wrapper;
+}
+
+// Welcome
+.welcome {
+	&__wrapper {
+		@extend %wrapper;
+		@extend %wrapper-decoration;
+		height:100%;
+	}
+	&__inner {
+		position: absolute;
+		top: 50%;
+		width: 100%;
+		transform: translateY(-50%);
+	}
+	&__text {
+		font-family: Gorditas;
+	}
+
+}
+.goToGame {
+	&__wrapper {
+
+	}
+	&__text {
+
+	}
+	&__link {
+
+	}
+}
+
+// Game
+.game {
+	&__wrapper {
+		@extend %wrapper;
+		@extend %wrapper-decoration;
+		padding-bottom: 40px;
+		height:100%;
+		background: $materialYellowBright;
+	}
+	&__footer {
+		position: absolute;
+		bottom: 0;
+		text-align: left;
+	}
+
+	&__controls {
+
+		&--text {
+
+		}
+	}
+	&__button {
+		@extend %button-decoration;
+		margin-left: 10px;
+	}
+}
+
+.bee {
+	&__wrapper {
+		@extend %cf;
+		list-style: none outside none;
+		padding: 0;
+	}
+	&__item {
+		padding: 20px 0;
+		position: relative;
+		&:nth-of-type(7) {
+			clear: left;
+		}
+		&:after {
+			content: '';
+			position: absolute;
+			top:50%;
+			left:50%;
+			width: 110px;
+			height: 100px;
+			margin: -55px;
+			background: #000;
+			border-radius: 50%;
+			z-index: 0;
+			transform: scale(0);
+			opacity: 0;
+			transition: all 0.1s ease;
+		}
+		h3,
+		p {
+			position: relative;
+			z-index: 2;
+		}
+	}
+	&__queen {
+		width: 100%;
+	}
+	&__worker {
+		@extend %grid-item;
+		width: 20%; // arbitrary withs instead of following grid
+	}
+	&__drone {
+		@extend %grid-item;
+		width: 12.5%; // arbitrary withs instead of following grid
+	}
+	&--hit-true {
+		color: $white;
+		&:after {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+}
+
+.gameOver {
+	&__wrapper {
+		position: absolute;
+		z-index: 2;
+		top: 60px;
+		left: 60px;
+		right: 60px;
+		bottom: 60px;
+		background: #424242;
+		padding: 50px 30px;
+		border-radius: 20px;
+	}
+	&__text {
+		color: $white;
+		font-size: 3rem;
+	}
+	&__button {
+		@extend %button-decoration;
+	}
+}

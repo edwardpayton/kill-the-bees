@@ -1,0 +1,62 @@
+// Config
+$boxSizing: border-box;
+$pixelBase: 10px;
+$columns: 12;
+
+
+// Colours
+$temp: #F0F; // e.g use as icon placeholder
+
+// Red - Purple
+$red: #F00;
+$tomato: #ff6347;
+$materialRed: #b71c1c;
+
+// Blue - Green
+$blue: #00F;
+$materialBlueBright: #2196f3;
+
+// Yellow - Brown
+$yellow: #FF0;
+$materialYellowBright:#ffea00;
+
+// B+W - light to dark
+$white: #FFF;
+$black: #000;
+
+// Other colours
+$facebook: #576FAA;
+$twitter: #55ACEE;
+
+// Sizes
+
+$borderRadius12: 12px;
+$borderRadius4: 4px;
+
+
+// Icon maps
+$iconMap: (
+  "one","two","three","four"
+);
+// @each $icon in $iconMap {
+//  &.-#{$icon} {
+//    --Styles--
+//  }
+// }
+
+
+// Transitions
+$bounce: cubic-bezier(.87,-.41,.19,1.44);
+
+
+// Fonts
+//@import url(https://fonts.googleapis.com/css?family=Raleway:500,700,900);
+//$font1: 'Raleway', sans-serif;
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400);
+$font1: 'Source Sans Pro', sans-serif;
+@import url(https://fonts.googleapis.com/css?family=Gorditas);
+$font2: 'Gorditas', sans-serif;
+
+$fontLight:300;
+$fontMid:700;
+$fontBold:900

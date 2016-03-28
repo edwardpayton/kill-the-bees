@@ -8,49 +8,37 @@ angular.module('KillTheBees.game', ['ngRoute'])
     controller: 'GameCtrl'
   });
 }])
-
-.controller('GameCtrl', function($scope) {
-    
-
-    function bee(type, totalLife, hitPoints) {
-        this.type = type;
-        this.totalLife = totalLife;
-        this.currentLife = totalLife;
-        this.hitPoints = hitPoints;
-
-        this.isAlive = true;
-    }
-
-    function beeFactory(type, totalLife, hitPoints) {
-        return new bee(type, totalLife, hitPoints);
-    }
-
+/*
+ * KillTheBees game controller
+ * This is the main controller for the game
+ */
+.controller('GameCtrl', function($scope, beeService, $timeout) {
+    /*
+     * beeInit functions
+     * initialises the game
+     */
     (function beeInit() {
         var i;
         $scope.gameOver = false;
         $scope.beeArr = [];
 
-        $scope.beeArr.push(beeFactory('queen',100,8));
+        $scope.beeArr.push(beeService.makeBee('queen',100,8));
         for (i = 0; i < 5; i++) {
-            $scope.beeArr.push(beeFactory('worker',75,10))
+            $scope.beeArr.push(beeService.makeBee('worker',75,10))
         }
 
         $scope.drones = [];
         for (i = 0; i < 8; i++) {
-            $scope.beeArr.push(beeFactory('drone',50,12))
+            $scope.beeArr.push(beeService.makeBee('drone',50,12))
         }
+
     })();
 
+    /* 
+     * killBeeFunc function
+     * picks a random bee to hit, takes off life points, if life points are 0 picks another be, if queen bee has 0 life points - ends game
+     */
     function killBeeFunc() {
-        // 0 > If bees current life
-            // hit another bee
-        // else 
-            // deduct hit
-            // if currentlife now < 0
-                // cL = 0
-            // if bee is queen & life is 0
-                // all bees current life = 0
-            // show notification text
         var pickBee = Math.floor((Math.random() * $scope.beeArr.length)),
             chosenBee = $scope.beeArr[pickBee];
 
@@ -59,18 +47,17 @@ angular.module('KillTheBees.game', ['ngRoute'])
         } 
         else {
             chosenBee.currentLife -= chosenBee.hitPoints;
+            chosenBee.hit = true;
+            $timeout(function() {
+                chosenBee.hit = false;
+            }, 250);
             if(chosenBee.currentLife <= 0) {
                 chosenBee.currentLife = 0;
                 chosenBee.isAlive = false;
             }
 
             if(chosenBee.type === 'queen' && chosenBee.currentLife === 0) {
-                var allBees = $scope.beeArr.length,
-                    i;
-                for (i = 0; i < allBees; i++) {
-                    $scope.beeArr[i].currentLife = 0;
-                }
-                $scope.gameOver = true;
+                beeMatch(false);
             }
             $scope.killClick = true;
             $scope.killText = (chosenBee.type !== 'queen') ?  "a " + chosenBee.type : "the queen bee"; 
@@ -78,14 +65,52 @@ angular.module('KillTheBees.game', ['ngRoute'])
     }
     $scope.killBee = killBeeFunc;
 
+    /* 
+     * restartGameFunc function
+     * resets the game
+     */
     function restartGameFunc() {
-        // TODO - D.R.Y this up, replicates the game over function above
+        beeMatch(true);
+    }
+    $scope.restartGame = restartGameFunc;
+
+    /*
+     * beeMatch     function
+     * args         Boolean     true = reset game, false = end game
+     * returns      Resets or ends game
+     */
+    function beeMatch(bool) {
         var allBees = $scope.beeArr.length,
             i;
         for (i = 0; i < allBees; i++) {
-            $scope.beeArr[i].currentLife = $scope.beeArr[i].totalLife;
+            if(bool === true) {
+                $scope.beeArr[i].currentLife = $scope.beeArr[i].totalLife;
+            } else {
+                $scope.beeArr[i].currentLife = 0;
+            } 
         }
-        $scope.gameOver = false;
+        $scope.gameOver = !bool;
     }
-    $scope.restartGame = restartGameFunc;
+
+})
+/*
+ * beeService service
+ * Used for creating new bees
+ * args         type = bee type, totalLife = bee types total life, hitPoints = bee types hit points
+ * returns      A new bee
+ */
+.service('beeService', function() {
+    function bee(type, totalLife, hitPoints) {
+        this.type = type;
+        this.totalLife = totalLife;
+        this.currentLife = totalLife;
+        this.hitPoints = hitPoints;
+
+        this.isAlive = true;
+        this.hit = false;
+    }
+
+    this.makeBee = function(type, totalLife, hitPoints) {
+        return new bee(type, totalLife, hitPoints);
+    }
 });
